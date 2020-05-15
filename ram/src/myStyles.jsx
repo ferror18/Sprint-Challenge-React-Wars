@@ -33,4 +33,23 @@ export const Line = styled.p`
     font-wheight: italic;
     line-height: .2rem;
 `
-export const MoreBtn = styled.button``
+export const MoreBtn = styled.button`
+    width: 80%;
+    border: #005607 1px solid;
+    border-radius: 16px;
+    background-color: #E1EFE6;
+    font-size: 2rem;
+    box-shadow: 5px 5px #888888;
+    margin: 5% auto;
+`
+export const StyledSearchBar = styled.input`
+    width: 80%;
+    heigth: 10%;
+    border: #005607 1px solid;
+    border-radius: 10px;
+    background-color: white;
+    font-size: 2rem;
+    text-decoration: italics;
+    box-shadow: 5px 5px #888888;
+    margin: 5% auto;
+`

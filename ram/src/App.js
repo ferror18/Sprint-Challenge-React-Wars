@@ -4,6 +4,7 @@ import Axios from 'axios';
 import { baseUrl } from "./constants";
 import Character from "./components/Character.js";
 import { Tittle, Container, MoreBtn } from "./myStyles";
+import SearchBar from './components/SearchBar';
 let query = ``
 let myUrl = baseUrl.concat(query)
 const App = () => {
@@ -12,19 +13,21 @@ const App = () => {
   const [characters, setCharacters] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const banana = ()=>{setCurrentPage(currentPage+1);}
+  const [searchTerm, setSearchTerm] = useState('')
   // Fetch characters from the API in an effect hook. Remember, anytime you have a 
   // side effect in a component, you want to think about which state and/or props it should
   // sync up with, if any.
-  // useEffect(()=>{
-  //     Axios.get(myUrl.concat(`?page=1`))
-  // .then( response => {
-  //     console.log(response);
-  //     setCharacters(response.data.results)
-  // })
-  // .catch(response => { 
-  //     console.log(`there was an error /n /n ${response}`)
-  // })
-  //   }, [])
+
+  function filteredCharacters(arr) {
+    return arr.filter(item => {
+      if (!searchTerm) {
+        return item
+      }
+      if (item.name.toLowerCase().includes(searchTerm)) {
+        return item
+      }
+    })
+  }
   useEffect(()=>{
     Axios.get(myUrl.concat(`?page=${currentPage}`) )
   .then( response => {
@@ -35,15 +38,29 @@ const App = () => {
       console.log(`there was an error /n /n ${response}`)
   })
   }, [currentPage])
+
+  // useEffect(()=>{
+  //   Axios.get(myUrl.concat(`?page=${currentPage}`) )
+  // .then( response => {
+  //     console.log(response);
+  //     setCharacters(filteredCharacters(characters.concat(response.data.results)))
+  // })
+  // .catch(response => { 
+  //     console.log(`there was an error /n /n ${response}`)
+  // })
+  // }, [currentPage])
+
+
   if (!characters) {
     return (<Tittle>Loading ...</Tittle>)
   }
   return (
     <div className="App">
       <Tittle className="Header">-  Rick and Morty   - Characters</Tittle>
+      <SearchBar type='text' updateSearchTerm={setSearchTerm}/>
       <Container>
       {
-        characters.map(character => {
+        filteredCharacters(characters).map(character => {
           return <Character character={character} key={currentPage.toString().concat(character.id)}/>
         })
       }
